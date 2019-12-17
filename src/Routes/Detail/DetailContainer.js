@@ -31,11 +31,9 @@ export default class extends React.Component {
     let result = null;
     try {
       if (isMovie) {
-        const {data} = await moviesApi.movieDetail(parsedId);
-        result = data;
+        ({ data: result } = await moviesApi.movieDetail(parsedId));
       } else {
-        const {data} = await tvApi.showDetail(parsedId);
-        result = data;
+        ({ data: result } = await tvApi.showDetail(parsedId));
       }
     } catch {
       this.setState({ error: "Can't find anything." });
