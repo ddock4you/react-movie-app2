@@ -1,5 +1,6 @@
 // import React from "react";
 import React from 'react';
+import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import Loader from 'Components/Loader';
@@ -69,6 +70,18 @@ const Overview = styled.p`
     width: 50%;
 `;
 
+const IMDB = styled.a`
+    display: inline-block;
+    padding: 5px 8px;
+    background: rgb(245, 197, 24);
+    border-radius: 2px;
+    font-size: 12px;
+    font-weight: 700;
+    color: #000;
+`;
+
+const ListContainer = styled.div``;
+
 const DetailPresenter = ({ result, loading, error }) =>
     loading ? (
         <>
@@ -125,8 +138,43 @@ const DetailPresenter = ({ result, loading, error }) =>
                                     : `${genres.name} / `
                             )}
                         </Item>
+                        <Divider>•</Divider>
+                        <Item className='imdb'>
+                            <IMDB
+                                href={`https://www.imdb.com/title/${result.imdb_id}`}
+                                target='_blank'
+                            >
+                                imDb
+                            </IMDB>
+                        </Item>
                     </ItemContainer>
                     <Overview>{result.overview}</Overview>
+                    <ListContainer>
+                        {result.production_companies.map(production => (
+                            <div>
+                                <p>
+                                    {production.logo_path ? (
+                                        <img
+                                            src={`https://image.tmdb.org/t/p/w500${production.logo_path}`}
+                                        />
+                                    ) : null}
+                                </p>
+                                <p>{production.name}</p>
+                            </div>
+                        ))}
+                        {result.videos.results.map(youtube => (
+                            <div>
+                                <iframe
+                                    width='480'
+                                    height='360'
+                                    src={`https://www.youtube.com/embed/${youtube.key}`}
+                                    frameborder='0'
+                                    allow='accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture'
+                                    allowfullscreen
+                                ></iframe>
+                            </div>
+                        ))}
+                    </ListContainer>
                 </Data>
             </Content>
         </Container>
